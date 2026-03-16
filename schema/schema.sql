@@ -39,5 +39,6 @@ CREATE TABLE ratings(
     PRIMARY KEY (id, rating)
 )PARTITION BY RANGE(rating);
 
-CREATE TABLE ratings_low PARTITION OF ratings for values from (1) to (3);
-CREATE TABLE ratings_high PARTITION OF ratings for values from (3) to (5)
+CREATE TABLE ratings_low  PARTITION OF ratings FOR VALUES FROM (1) TO (3);
+CREATE TABLE ratings_mid  PARTITION OF ratings FOR VALUES FROM (3) TO (4);
+CREATE TABLE ratings_high PARTITION OF ratings FOR VALUES FROM (4) TO (6);
