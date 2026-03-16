@@ -70,28 +70,19 @@ def transform_books(books_df: pd.DataFrame, authors_df: pd.DataFrame) -> pd.Data
     return transformed
 
 
-def transform_genres(tags_df: pd.DataFrame, book_tags_df: pd.DataFrame, min_count: int = 2000) -> pd.DataFrame:
-     # Sum total count per tag across all books
-    tag_totals = (
-        book_tags_df
-        .groupby('tag_id')['count']
-        .sum()
-        .reset_index()
-        .rename(columns={'count': 'total_count'})
-    )
+def transform_genres(tags_df: pd.DataFrame, book_tags_df: pd.DataFrame) -> pd.DataFrame:
+    GENRES_TO_KEEP = [
+        'fiction', 'fantasy', 'romance', 'mystery',
+        'science-fiction', 'historical-fiction', 'non-fiction',
+        'thriller', 'horror', 'classics', 'young-adult',
+        'children', 'biography', 'poetry', 'crime',
+        'adventure', 'humor', 'graphic-novels', 'self-help'
+    ]
 
-    # Join with tag names
-    tags_with_counts = tags_df.merge(tag_totals, on='tag_id', how='left')
+    genres_df = tags_df[tags_df['tag_name'].isin(GENRES_TO_KEEP)].copy()
+    genres_df = genres_df.rename(columns={'tag_id': 'id', 'tag_name': 'name'})
 
-    # Keep only most popular tags
-    filtered = tags_with_counts[tags_with_counts['total_count'] >= min_count]
-
-    genres_df = filtered[['tag_id', 'tag_name']].rename(columns={
-        'tag_id': 'id',
-        'tag_name': 'name'
-    })
-
-    logging.info(f'Genres: filtered from {len(tags_df)} tags to {len(genres_df)} genres')
+    logging.info(f'Genres: kept {len(genres_df)} curated genres from {len(tags_df)} raw tags')
     return genres_df
 
 def transform_ratings(ratings_df: pd.DataFrame) -> pd.DataFrame:
