@@ -19,7 +19,7 @@ def transform_authors(books_df: pd.DataFrame) -> pd.DataFrame:
     return authors_df
 
 
-def transform_books(books_df: pd.DataFrame, authors_df: pd.DataFrame) -> pd.DataFrame:
+def transform_books(books_df: pd.DataFrame) -> pd.DataFrame:
     """
     Select and rename only the columns the schema needs.
     Map author names to their assigned IDs from the authors table.
@@ -85,21 +85,6 @@ def transform_genres(tags_df: pd.DataFrame, book_tags_df: pd.DataFrame) -> pd.Da
     logging.info(f'Genres: kept {len(genres_df)} curated genres from {len(tags_df)} raw tags')
     return genres_df
 
-def transform_ratings(ratings_df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Ratings are already clean (no nulls, 3 columns).
-    Just validate the rating range and log anything dropped.
-    """
-    before = len(ratings_df)
-    transformed = ratings_df[
-        (ratings_df['rating'] >= 1) &
-        (ratings_df['rating'] <= 5)
-    ].copy()
-    dropped = before - len(transformed)
-    logging.info(f'Ratings: dropped {dropped} out-of-range rows from {before} total')
-    logging.info(f'Transformed {len(transformed)} ratings')
-    return transformed
-
 def transform_book_genres(book_tags_df: pd.DataFrame, books_raw_df: pd.DataFrame, books_transformed_df: pd.DataFrame, genres_df: pd.DataFrame) -> pd.DataFrame:
     # Inner join book_tags and books on goodreads_book_id
     book_id_map = books_raw_df[['book_id', 'goodreads_book_id']].copy()
@@ -142,7 +127,7 @@ if __name__ == "__main__":
     ratings_raw   = extract_csv('data/ratings.csv')
 
     authors_df    = transform_authors(books_raw)
-    books_df      = transform_books(books_raw, authors_df)
+    books_df      = transform_books(books_raw)
     genres_df     = transform_genres(tags_raw, book_tags_raw)
     book_genres_df = transform_book_genres(book_tags_raw, books_raw, books_df, genres_df)
     ratings_df = transform_ratings(ratings_raw, books_df)

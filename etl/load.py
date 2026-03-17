@@ -140,7 +140,7 @@ if __name__ == "__main__":
     book_tags_raw = extract_csv('data/book_tags.csv')
 
     authors_df     = transform_authors(books_raw)
-    books_df       = transform_books(books_raw, authors_df)
+    books_df       = transform_books(books_raw)
     genres_df      = transform_genres(tags_raw, book_tags_raw)
     book_genres_df = transform_book_genres(book_tags_raw, books_raw, books_df, genres_df)
     ratings_df = transform_ratings(ratings_raw, books_df)
