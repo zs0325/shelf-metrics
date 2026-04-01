@@ -192,10 +192,16 @@ Seven SQL challenge files live in the `analyses/` directory.
 psql -h localhost -d goodbooks -U postgres -f analyses/01_basic_aggregations.sql
 ```
 ---
- 
+
+
+### Power BI Dashboard views
+<img width="1317" height="745" alt="Screenshot 2026-04-01 180114" src="https://github.com/user-attachments/assets/552a90f7-224d-4035-90f8-8d5abec71b0e" />
+<img width="1317" height="737" alt="Screenshot 2026-04-01 180129" src="https://github.com/user-attachments/assets/c9488554-beb2-435a-b1df-de109d9a7369" />
+<img width="1323" height="743" alt="Screenshot 2026-04-01 181027" src="https://github.com/user-attachments/assets/9a649c77-39dd-4571-a8bd-f1fd416ce654" />
+
 ## Data Quality Notes
- 
-Several data quality issues were encountered and handled during the transform step:
+Several data quality issues were encountered and handled during the transform step:![Uploading Screenshot 2026-04-01 180129.png…]()
+
  
 - **Authors column** contains comma-separated multiple authors — only the primary author is extracted per book. Co-authored books are attributed to the first listed author.
 - **21 books** had null `original_publication_year` and were dropped — a year is required for decade-based analyses.
